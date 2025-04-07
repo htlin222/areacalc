@@ -1,4 +1,7 @@
-# Pathology Area Calculator
+# Pathology Area Calculator 
+
+![image](https://github.com/user-attachments/assets/6c9e6a41-0a34-4442-9917-2bcbfde03336)
+
 
 A specialized tool for calculating proportional areas in pathology images using a hexagonal grid system.
 
