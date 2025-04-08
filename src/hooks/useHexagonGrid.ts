@@ -62,20 +62,18 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
       
       // Calculate extra rows and columns needed based on maximum offset
       const maxOffset = 200; // Maximum offset in pixels
-      const extraRows = Math.ceil(maxOffset / hexHeight) * 2; // *2 for both positive and negative offsets
-      const extraCols = Math.ceil(maxOffset / hexWidth) * 2;
-      
-      // Add extra rows and columns to ensure coverage when offset
-      const rows = Math.ceil(canvasHeight / hexHeight) + extraRows;
-      const cols = Math.ceil(canvasWidth / hexWidth) + extraCols;
       
       // Calculate starting row and column to ensure we cover negative offsets
       const startRow = -Math.ceil(maxOffset / hexHeight);
       const startCol = -Math.ceil(maxOffset / hexWidth);
       
       // Draw base grid with offset
-      for (let r = startRow; r < rows + startRow; r++) {
-        for (let c = startCol; c < cols + startCol; c++) {
+      // Calculate row and column counts dynamically since we commented out the variables
+      const rowCount = Math.ceil(canvasHeight / hexHeight) + Math.ceil(maxOffset / hexHeight) * 2;
+      const colCount = Math.ceil(canvasWidth / hexWidth) + Math.ceil(maxOffset / hexWidth) * 2;
+      
+      for (let r = startRow; r < startRow + rowCount; r++) {
+        for (let c = startCol; c < startCol + colCount; c++) {
           const { x, y, size } = getHexCoordinates(hexSize, r, c, gridOffsetX, gridOffsetY);
           // Only draw if the hexagon is at least partially within the canvas
           if (x + size > -maxOffset && x - size < canvasWidth + maxOffset && 
@@ -104,16 +102,12 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
     const closestHex = findClosestHexagon(x, y, hexSize, canvasWidth, canvasHeight, gridOffsetX, gridOffsetY);
     
     if (closestHex) {
-      const hexWidth = hexSize * 1.75;
-      const hexHeight = Math.sqrt(3) * hexSize * 0.9;
+      // These variables are calculated but not used - commenting out to fix TS errors
+      // const hexWidth = hexSize * 1.75;
+      // const hexHeight = Math.sqrt(3) * hexSize * 0.9;
       
       // Use the same grid calculation logic as in drawGrid
-      const maxOffset = 200;
-      const extraRows = Math.ceil(maxOffset / hexHeight) * 2;
-      const extraCols = Math.ceil(maxOffset / hexWidth) * 2;
-      
-      const rows = Math.ceil(canvasHeight / hexHeight) + extraRows;
-      const cols = Math.ceil(canvasWidth / hexWidth) + extraCols;
+      // const maxOffset = 200;
       
       if (isErasing) {
         // Eraser mode: remove cells from all visible layers
