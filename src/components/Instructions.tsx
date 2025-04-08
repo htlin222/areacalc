@@ -1,5 +1,5 @@
 import React from 'react';
-import { Info, MousePointer, Layers, Sliders, Calculator, Image, Eraser } from 'lucide-react';
+import { Info, MousePointer, Layers, Sliders, Calculator, Image, Eraser, Keyboard } from 'lucide-react';
 
 export const Instructions: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ export const Instructions: React.FC = () => {
         Instructions
       </h3>
       
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div>
           <h4 className="font-medium mb-2">Drawing & Layers</h4>
           <ul className="list-disc pl-5 space-y-1">
@@ -52,12 +52,46 @@ export const Instructions: React.FC = () => {
               <span>Toggle layer visibility using the eye icon</span>
             </li>
             <li className="flex items-start">
-              <MousePointer size={14} className="mr-1 mt-0.5 flex-shrink-0" />
-              <span>Hide the grid to view only the background image</span>
+              <Sliders size={14} className="mr-1 mt-0.5 flex-shrink-0" />
+              <span>Adjust layer opacity using the sliders icon</span>
+            </li>
+            <li className="flex items-start">
+              <Image size={14} className="mr-1 mt-0.5 flex-shrink-0" />
+              <span>Link grid to image to move them together</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 className="font-medium mb-2">Keyboard Shortcuts</h4>
+          <ul className="list-disc pl-5 space-y-1">
+            <li className="flex items-start">
+              <Keyboard size={14} className="mr-1 mt-0.5 flex-shrink-0" />
+              <span><kbd className="px-1 py-0.5 bg-gray-100 border rounded">W</kbd> Move grid up</span>
+            </li>
+            <li className="flex items-start">
+              <Keyboard size={14} className="mr-1 mt-0.5 flex-shrink-0" />
+              <span><kbd className="px-1 py-0.5 bg-gray-100 border rounded">A</kbd> Move grid left</span>
+            </li>
+            <li className="flex items-start">
+              <Keyboard size={14} className="mr-1 mt-0.5 flex-shrink-0" />
+              <span><kbd className="px-1 py-0.5 bg-gray-100 border rounded">S</kbd> Move grid down</span>
+            </li>
+            <li className="flex items-start">
+              <Keyboard size={14} className="mr-1 mt-0.5 flex-shrink-0" />
+              <span><kbd className="px-1 py-0.5 bg-gray-100 border rounded">D</kbd> Move grid right</span>
+            </li>
+            <li className="flex items-start">
+              <Keyboard size={14} className="mr-1 mt-0.5 flex-shrink-0" />
+              <span><kbd className="px-1 py-0.5 bg-gray-100 border rounded">Space</kbd> Cycle through layers</span>
             </li>
           </ul>
         </div>
       </div>
+      
+      <p className="mt-4 text-xs italic">
+        Tip: For best results, adjust the hexagon size to match the scale of features in your image.
+      </p>
     </div>
   );
 };

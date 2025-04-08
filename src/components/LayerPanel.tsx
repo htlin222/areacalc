@@ -62,12 +62,17 @@ export const LayerPanel: React.FC<LayerPanelProps> = ({
           <Layers size={16} className="mr-1" />
           Layers
         </h3>
-        <button 
-          className="bg-blue-500 text-white p-1 rounded"
-          onClick={addLayer}
-        >
-          <Plus size={16} />
-        </button>
+        <div className="flex items-center">
+          <span className="text-xs text-gray-500 italic mr-2" title="Press Spacebar to cycle through layers">
+            Press Space to cycle
+          </span>
+          <button 
+            className="bg-blue-500 text-white p-1 rounded"
+            onClick={addLayer}
+          >
+            <Plus size={16} />
+          </button>
+        </div>
       </div>
       
       <div className="space-y-2 max-h-60 overflow-y-auto">
@@ -75,7 +80,7 @@ export const LayerPanel: React.FC<LayerPanelProps> = ({
           <div 
             key={layer.id}
             className={`flex flex-col p-2 rounded cursor-pointer ${
-              activeLayerId === layer.id ? 'bg-blue-100' : 'hover:bg-gray-100'
+              activeLayerId === layer.id ? 'bg-blue-100 border-l-4 border-blue-500' : 'hover:bg-gray-100'
             }`}
             onClick={() => setActiveLayerId(layer.id)}
           >

@@ -73,7 +73,7 @@ export const HexagonGrid: React.FC = () => {
     };
   }, []);
 
-  // Handle keyboard events for grid offset adjustment
+  // Handle keyboard events for grid offset adjustment and layer selection
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only handle keys if not typing in an input field
@@ -97,12 +97,25 @@ export const HexagonGrid: React.FC = () => {
         case 'd': // Move grid right
           setGridOffsetX(gridOffsetX + offsetStep);
           break;
+        case ' ': // Spacebar - toggle through layers
+          if (layers.length > 0) {
+            // Find the index of the current active layer
+            const currentIndex = layers.findIndex(layer => layer.id === activeLayerId);
+            // Calculate the next index, wrapping around to the beginning if necessary
+            const nextIndex = (currentIndex + 1) % layers.length;
+            // Set the next layer as active
+            setActiveLayerId(layers[nextIndex].id);
+            e.preventDefault(); // Prevent scrolling with spacebar
+          }
+          break;
         default:
           return; // Exit for other keys
       }
       
       // Prevent default behavior for these keys
-      e.preventDefault();
+      if (e.key !== ' ') {
+        e.preventDefault();
+      }
     };
     
     // Add event listener
@@ -112,7 +125,7 @@ export const HexagonGrid: React.FC = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [gridOffsetX, gridOffsetY, setGridOffsetX, setGridOffsetY, linkToImage]);
+  }, [gridOffsetX, gridOffsetY, setGridOffsetX, setGridOffsetY, layers, activeLayerId, setActiveLayerId]);
 
   return (
     <div className="flex flex-col space-y-4 bg-gray-100 p-4 rounded-lg">
