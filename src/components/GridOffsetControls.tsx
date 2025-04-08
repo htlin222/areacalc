@@ -1,25 +1,48 @@
 import React from 'react';
-import { Move } from 'lucide-react';
+import { Move, Link } from 'lucide-react';
 
 interface GridOffsetControlsProps {
   gridOffsetX: number;
   setGridOffsetX: (offset: number) => void;
   gridOffsetY: number;
   setGridOffsetY: (offset: number) => void;
+  linkToImage: boolean;
+  setLinkToImage: (linked: boolean) => void;
 }
 
 export const GridOffsetControls: React.FC<GridOffsetControlsProps> = ({
   gridOffsetX,
   setGridOffsetX,
   gridOffsetY,
-  setGridOffsetY
+  setGridOffsetY,
+  linkToImage,
+  setLinkToImage
 }) => {
   return (
     <div className="bg-white p-3 rounded-lg border border-gray-300 mb-4">
-      <h3 className="font-semibold flex items-center mb-2">
-        <Move size={16} className="mr-1" />
-        Grid Offset
-      </h3>
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="font-semibold flex items-center">
+          <Move size={16} className="mr-1" />
+          Grid Offset
+        </h3>
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="linkToImage"
+            checked={linkToImage}
+            onChange={(e) => setLinkToImage(e.target.checked)}
+            className="mr-1"
+          />
+          <label 
+            htmlFor="linkToImage" 
+            className="flex items-center text-sm cursor-pointer"
+            title="Link grid offset to image position"
+          >
+            <Link size={14} className="mr-1" />
+            Link to Image
+          </label>
+        </div>
+      </div>
       
       <div className="space-y-3">
         <div className="flex flex-col">
@@ -56,6 +79,10 @@ export const GridOffsetControls: React.FC<GridOffsetControlsProps> = ({
             />
             <div className="text-xs ml-2 w-10 text-right">{gridOffsetY}px</div>
           </div>
+        </div>
+        
+        <div className="text-xs text-gray-500 italic mb-2">
+          Tip: Use WASD keys to adjust grid position (W: up, A: left, S: down, D: right)
         </div>
         
         <button

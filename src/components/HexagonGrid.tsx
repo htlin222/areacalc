@@ -25,6 +25,8 @@ export const HexagonGrid: React.FC = () => {
     setGridOffsetX,
     gridOffsetY,
     setGridOffsetY,
+    linkToImage,
+    setLinkToImage,
     layers,
     activeLayerId,
     setActiveLayerId,
@@ -70,6 +72,47 @@ export const HexagonGrid: React.FC = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // Handle keyboard events for grid offset adjustment
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only handle keys if not typing in an input field
+      if (e.target instanceof HTMLInputElement || 
+          e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      
+      const offsetStep = 5; // Pixels to move per keypress
+      
+      switch (e.key.toLowerCase()) {
+        case 'w': // Move grid up
+          setGridOffsetY(gridOffsetY - offsetStep);
+          break;
+        case 's': // Move grid down
+          setGridOffsetY(gridOffsetY + offsetStep);
+          break;
+        case 'a': // Move grid left
+          setGridOffsetX(gridOffsetX - offsetStep);
+          break;
+        case 'd': // Move grid right
+          setGridOffsetX(gridOffsetX + offsetStep);
+          break;
+        default:
+          return; // Exit for other keys
+      }
+      
+      // Prevent default behavior for these keys
+      e.preventDefault();
+    };
+    
+    // Add event listener
+    window.addEventListener('keydown', handleKeyDown);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [gridOffsetX, gridOffsetY, setGridOffsetX, setGridOffsetY, linkToImage]);
 
   return (
     <div className="flex flex-col space-y-4 bg-gray-100 p-4 rounded-lg">
@@ -143,6 +186,8 @@ export const HexagonGrid: React.FC = () => {
             setGridOffsetX={setGridOffsetX}
             gridOffsetY={gridOffsetY}
             setGridOffsetY={setGridOffsetY}
+            linkToImage={linkToImage}
+            setLinkToImage={setLinkToImage}
           />
           
           <LayerPanel 

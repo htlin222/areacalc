@@ -11,14 +11,15 @@ interface UseHexagonGridProps {
 export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexagonGridProps) => {
   const [hexSize, setHexSize] = useState<number>(20);
   const [brushSize, setBrushSize] = useState<number>(1);
-  const [gridOffsetX, setGridOffsetX] = useState<number>(0);
-  const [gridOffsetY, setGridOffsetY] = useState<number>(0);
+  const [gridOffsetX, _setGridOffsetX] = useState<number>(0);
+  const [gridOffsetY, _setGridOffsetY] = useState<number>(0);
+  const [linkToImage, setLinkToImage] = useState<boolean>(false);
   const [layers, setLayers] = useState<Layer[]>([
     { id: 1, name: 'Layer 1', color: '#FF5252', cells: {}, visible: true, opacity: 0.3 }
   ]);
   const [activeLayerId, setActiveLayerId] = useState<number>(1);
   const [calculationResult, setCalculationResult] = useState<CalculationResult | null>(null);
-  const [backgroundImage, setBackgroundImage] = useState<BackgroundImage | null>(null);
+  const [backgroundImage, _setBackgroundImage] = useState<BackgroundImage | null>(null);
   const [gridVisible, setGridVisible] = useState<boolean>(true);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [isErasing, setIsErasing] = useState<boolean>(false);
@@ -311,6 +312,43 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
     ));
   };
 
+  // Custom setter for grid offset X that also updates image position if linked
+  const setGridOffsetX = (offset: number) => {
+    _setGridOffsetX(offset);
+    
+    // If linked to image, update image position too
+    if (linkToImage && backgroundImage) {
+      _setBackgroundImage({
+        ...backgroundImage,
+        x: offset
+      });
+    }
+  };
+  
+  // Custom setter for grid offset Y that also updates image position if linked
+  const setGridOffsetY = (offset: number) => {
+    _setGridOffsetY(offset);
+    
+    // If linked to image, update image position too
+    if (linkToImage && backgroundImage) {
+      _setBackgroundImage({
+        ...backgroundImage,
+        y: offset
+      });
+    }
+  };
+  
+  // Custom setter for background image that also updates grid offsets too
+  const setBackgroundImage = (newImage: BackgroundImage | null) => {
+    _setBackgroundImage(newImage);
+    
+    // If linked to image and we have a new image, update grid offsets too
+    if (linkToImage && newImage) {
+      _setGridOffsetX(newImage.x);
+      _setGridOffsetY(newImage.y);
+    }
+  };
+
   // Effect to update canvas dimensions
   useEffect(() => {
     if (gridRef.current) {
@@ -334,6 +372,8 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
     setGridOffsetX,
     gridOffsetY,
     setGridOffsetY,
+    linkToImage,
+    setLinkToImage,
     layers,
     activeLayerId,
     setActiveLayerId,
