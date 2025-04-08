@@ -77,14 +77,24 @@ export const findClosestHexagon = (
   const hexWidth = hexSize * 1.75;
   const hexHeight = Math.sqrt(3) * hexSize * 0.9;
 
-  const rows = Math.ceil(canvasHeight / hexHeight) + 1;
-  const cols = Math.ceil(canvasWidth / hexWidth) + 4;
+  // Calculate extra rows and columns needed based on maximum offset
+  const maxOffset = 200; // Maximum offset in pixels
+  const extraRows = Math.ceil(maxOffset / hexHeight) * 2; // *2 for both positive and negative offsets
+  const extraCols = Math.ceil(maxOffset / hexWidth) * 2;
+  
+  // Add extra rows and columns to ensure coverage when offset
+  const rows = Math.ceil(canvasHeight / hexHeight) + extraRows;
+  const cols = Math.ceil(canvasWidth / hexWidth) + extraCols;
+  
+  // Calculate starting row and column to ensure we cover negative offsets
+  const startRow = -Math.ceil(maxOffset / hexHeight);
+  const startCol = -Math.ceil(maxOffset / hexWidth);
 
   let minDist = Infinity;
   let closestHex = null;
 
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
+  for (let r = startRow; r < rows + startRow; r++) {
+    for (let c = startCol; c < cols + startCol; c++) {
       const { x: hexX, y: hexY } = getHexCoordinates(hexSize, r, c, offsetX, offsetY);
       const dist = Math.sqrt((x - hexX) ** 2 + (y - hexY) ** 2);
 
