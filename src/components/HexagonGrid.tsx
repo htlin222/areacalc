@@ -4,6 +4,7 @@ import { LayerPanel } from './LayerPanel';
 import { CalculationResultPanel } from './CalculationResult';
 import { Instructions } from './Instructions';
 import { ImageUploader } from './ImageUploader';
+import { GridOffsetControls } from './GridOffsetControls';
 import { Footer } from './Footer';
 import { Eye, EyeOff, Eraser } from 'lucide-react';
 import { useHexagonGrid } from '../hooks/useHexagonGrid';
@@ -20,6 +21,10 @@ export const HexagonGrid: React.FC = () => {
     setHexSize,
     brushSize,
     setBrushSize,
+    gridOffsetX,
+    setGridOffsetX,
+    gridOffsetY,
+    setGridOffsetY,
     layers,
     activeLayerId,
     setActiveLayerId,
@@ -131,6 +136,13 @@ export const HexagonGrid: React.FC = () => {
           <ImageUploader 
             backgroundImage={backgroundImage}
             setBackgroundImage={setBackgroundImage}
+          />
+          
+          <GridOffsetControls
+            gridOffsetX={gridOffsetX}
+            setGridOffsetX={setGridOffsetX}
+            gridOffsetY={gridOffsetY}
+            setGridOffsetY={setGridOffsetY}
           />
           
           <LayerPanel 

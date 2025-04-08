@@ -3,7 +3,9 @@ import { HexCoordinates, HexagonPosition } from "../types";
 export const getHexCoordinates = (
   size: number,
   row: number,
-  col: number
+  col: number,
+  offsetX = 0,
+  offsetY = 0
 ): HexCoordinates => {
   // Reduce gaps by making hexagons closer together
   const width = size * 1.75; // Reduced from 2 to bring hexagons closer horizontally
@@ -11,8 +13,8 @@ export const getHexCoordinates = (
   const offset = row % 2 === 0 ? 0 : width / 2;
 
   return {
-    x: col * width + offset,
-    y: row * height,
+    x: col * width + offset + offsetX,
+    y: row * height + offsetY,
     size,
   };
 };
@@ -68,7 +70,9 @@ export const findClosestHexagon = (
   y: number,
   hexSize: number,
   canvasWidth: number,
-  canvasHeight: number
+  canvasHeight: number,
+  offsetX = 0,
+  offsetY = 0
 ): HexagonPosition | null => {
   const hexWidth = hexSize * 1.75;
   const hexHeight = Math.sqrt(3) * hexSize * 0.9;
@@ -81,7 +85,7 @@ export const findClosestHexagon = (
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const { x: hexX, y: hexY } = getHexCoordinates(hexSize, r, c);
+      const { x: hexX, y: hexY } = getHexCoordinates(hexSize, r, c, offsetX, offsetY);
       const dist = Math.sqrt((x - hexX) ** 2 + (y - hexY) ** 2);
 
       if (dist < minDist && dist <= hexSize * 1.2) {
