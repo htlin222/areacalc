@@ -26,7 +26,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           image: img,
           x: 0,
           y: 0,
-          opacity: 0.5,
+          opacity: 1.0,
           scale: 1.0
         });
         setIsExpanded(true); // Auto-expand when image is uploaded

@@ -12,7 +12,7 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
   const [hexSize, setHexSize] = useState<number>(20);
   const [brushSize, setBrushSize] = useState<number>(1);
   const [layers, setLayers] = useState<Layer[]>([
-    { id: 1, name: 'Layer 1', color: '#FF5252', cells: {}, visible: true }
+    { id: 1, name: 'Layer 1', color: '#FF5252', cells: {}, visible: true, opacity: 0.3 }
   ]);
   const [activeLayerId, setActiveLayerId] = useState<number>(1);
   const [calculationResult, setCalculationResult] = useState<CalculationResult | null>(null);
@@ -78,7 +78,7 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
             if (value) {
               const [r, c] = key.split(',').map(Number);
               const { x, y, size } = getHexCoordinates(hexSize, r, c);
-              drawHexagon(ctx, x, y, size, true, layer.color);
+              drawHexagon(ctx, x, y, size, true, layer.color, layer.opacity);
             }
           });
         }
@@ -202,18 +202,18 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
   };
 
   const addLayer = () => {
-    const newId = layers.length > 0 ? Math.max(...layers.map(l => l.id)) + 1 : 1;
-    const usedColors = layers.map(layer => layer.color);
-    const newColor = getRandomColor(usedColors);
-    
-    setLayers([...layers, {
+    const newId = Math.max(0, ...layers.map(l => l.id)) + 1;
+    const usedColors = layers.map(l => l.color);
+    const newLayer: Layer = {
       id: newId,
       name: `Layer ${newId}`,
-      color: newColor,
+      color: getRandomColor(usedColors),
       cells: {},
-      visible: true
-    }]);
+      visible: true,
+      opacity: 0.3
+    };
     
+    setLayers([...layers, newLayer]);
     setActiveLayerId(newId);
   };
 
@@ -289,6 +289,12 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
     });
   };
 
+  const updateLayerOpacity = (id: number, opacity: number) => {
+    setLayers(layers.map(layer => 
+      layer.id === id ? { ...layer, opacity } : layer
+    ));
+  };
+
   // Effect to update canvas dimensions
   useEffect(() => {
     if (gridRef.current) {
@@ -318,6 +324,7 @@ export const useHexagonGrid = ({ gridRef, canvasWidth, canvasHeight }: UseHexago
     toggleGridVisibility,
     toggleLayerVisibility,
     renameLayer,
+    updateLayerOpacity,
     isErasing,
     toggleEraser,
     handleCanvasMouseDown,

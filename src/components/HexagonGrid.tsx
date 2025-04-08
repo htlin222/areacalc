@@ -30,6 +30,7 @@ export const HexagonGrid: React.FC = () => {
     toggleGridVisibility,
     toggleLayerVisibility,
     renameLayer,
+    updateLayerOpacity,
     isErasing,
     toggleEraser,
     handleCanvasMouseDown,
@@ -140,6 +141,7 @@ export const HexagonGrid: React.FC = () => {
             deleteLayer={deleteLayer}
             toggleLayerVisibility={toggleLayerVisibility}
             renameLayer={renameLayer}
+            updateLayerOpacity={updateLayerOpacity}
           />
           
           <CalculationResultPanel calculationResult={calculationResult} />

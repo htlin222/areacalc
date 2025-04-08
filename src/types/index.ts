@@ -4,6 +4,7 @@ export interface Layer {
   color: string;
   cells: Record<string, boolean>;
   visible: boolean;
+  opacity: number;
 }
 
 export interface HexCoordinates {
